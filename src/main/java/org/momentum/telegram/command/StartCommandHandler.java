@@ -8,7 +8,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 @Component
-public class StartCommandHandler implements CommandHandler{
+public class StartCommandHandler implements CommandHandler {
 
     private final TelegramClient telegramClient;
 
@@ -36,7 +36,7 @@ public class StartCommandHandler implements CommandHandler{
 
                         Your personal productivity assistant 🍓.
 
-                        Use /help to see available commands.
+                        Use /menu to see available commands.
                         """)
                 .build();
 

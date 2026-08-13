@@ -1,4 +1,4 @@
-package org.momentum.telegram;
+package org.momentum.telegram.bot;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

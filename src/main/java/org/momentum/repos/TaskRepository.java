@@ -1,9 +1,19 @@
-//package org.momentum.repos;
-//
-//
-//import org.momentum.models.task.Task;
-//import org.springframework.stereotype.Repository;
-//
-//@Repository
-//public interface TaskRepository extends BaseRepository<Task>{
-//}
+package org.momentum.repos;
+
+
+import org.momentum.dto.TaskDTO;
+import org.momentum.models.task.Task;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.time.Instant;
+import java.util.List;
+
+@Repository
+public interface TaskRepository extends BaseRepository<Task>{
+
+    @Query("SELECT new org.momentum.dto.TaskDTO(t.title,c.title,t.comment) FROM Task t Left Join t.category c where t.deleted = 0 and t.creationTime >= :sstartOfDay and t.creationTime <= :startOfTomorrow ")
+    List<TaskDTO> getTodaysTasks(@Param("startOfDay") Instant startOfDay, @Param("startOfTomorrow") Instant startOfTomorrow);
+
+}
