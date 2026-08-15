@@ -5,6 +5,10 @@ public class BaseDTO {
     protected Long id;//todo test with private access modifier
     protected Integer deleted = 0;
 
+    public BaseDTO(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

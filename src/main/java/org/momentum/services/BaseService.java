@@ -11,4 +11,5 @@ public abstract class BaseService<E extends BaseEntity,R extends BaseRepository<
     @Autowired
     protected R repository;
 
+    public abstract E create(String taskTitle);
 }

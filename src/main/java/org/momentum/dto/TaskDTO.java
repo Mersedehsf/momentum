@@ -8,10 +8,14 @@ public class TaskDTO extends BaseDTO {
 
     private String comment;
 
-    public TaskDTO(String title, String categoryTitle, String comment) {
+    private Integer completed;
+
+    public TaskDTO(Long id,String title, String categoryTitle, String comment, Integer completed) {
+        super(id);
         this.title = title;
         this.categoryTitle = categoryTitle;
         this.comment = comment;
+        this.completed = completed;
     }
 
     public String getTitle() {
@@ -36,5 +40,13 @@ public class TaskDTO extends BaseDTO {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public Integer getCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(Integer completed) {
+        this.completed = completed;
     }
 }

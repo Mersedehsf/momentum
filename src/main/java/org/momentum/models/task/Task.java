@@ -4,6 +4,8 @@ package org.momentum.models.task;
 import jakarta.persistence.*;
 import org.momentum.models.BaseEntity;
 
+import java.time.Instant;
+
 @Entity
 @Table(name = "task")
 public class Task extends BaseEntity {
@@ -20,6 +22,12 @@ public class Task extends BaseEntity {
 
     @Column(name = "comment")
     private String comment;
+
+    @Column(name = "completed")
+    private Integer completed = 0;
+
+    @Column(name = "completion_time")
+    private Instant completionTime;
 
     public String getTitle() {
         return title;
@@ -51,5 +59,21 @@ public class Task extends BaseEntity {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public Integer getCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(Integer completed) {
+        this.completed = completed;
+    }
+
+    public Instant getCompletionTime() {
+        return completionTime;
+    }
+
+    public void setCompletionTime(Instant completionTime) {
+        this.completionTime = completionTime;
     }
 }

@@ -13,6 +13,20 @@ import java.util.List;
 @Service
 public class TaskService extends BaseService<Task, TaskRepository>{
 
+    @Override
+    public Task create(String taskTitle) {
+        Task task = new Task();
+        task.setTitle(taskTitle);
+        return repository.save(task);
+    }
+
+    public Task completeTask(Long taskId) {
+        Task task = repository.findById(taskId).orElseThrow(() -> new RuntimeException());//todo
+        task.setCompleted(1);
+        task.setCompletionTime(Instant.now());
+        return repository.save(task);
+    }
+
     public List<TaskDTO> findTodaysTasks(){
         ZoneId zone = ZoneId.of("Asia/Tehran");
 

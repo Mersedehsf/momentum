@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface TaskRepository extends BaseRepository<Task>{
 
-    @Query("SELECT new org.momentum.dto.TaskDTO(t.title,c.title,t.comment) FROM Task t Left Join t.category c where t.deleted = 0 and t.creationTime >= :sstartOfDay and t.creationTime <= :startOfTomorrow ")
+    @Query("SELECT new org.momentum.dto.TaskDTO(t.id,t.title,c.title,t.comment,t.completed) FROM Task t Left Join t.category c where t.deleted = 0 and t.creationTime >= :startOfDay and t.creationTime < :startOfTomorrow ")
     List<TaskDTO> getTodaysTasks(@Param("startOfDay") Instant startOfDay, @Param("startOfTomorrow") Instant startOfTomorrow);
 
 }
