@@ -29,6 +29,17 @@ public class Task extends BaseEntity {
     @Column(name = "completion_time")
     private Instant completionTime;
 
+    public Task() {
+    }
+
+    public Task(String title, Integer estimatedMinutes, Category category, String comment, Integer completed) {
+        this.title = title;
+        this.estimatedMinutes = estimatedMinutes;
+        this.category = category;
+        this.comment = comment;
+        this.completed = completed;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -75,5 +86,22 @@ public class Task extends BaseEntity {
 
     public void setCompletionTime(Instant completionTime) {
         this.completionTime = completionTime;
+    }
+
+    @Override
+    public String toString() {
+        return """
+            📝 Task
+
+            title: %s
+            estimatedMinutes: %s
+            category: %s
+            comment: %s
+            """.formatted(
+                title,
+                estimatedMinutes,
+                category,
+                comment
+        );
     }
 }

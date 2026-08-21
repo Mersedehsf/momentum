@@ -1,7 +1,7 @@
 package org.momentum.telegram;
 
 import org.momentum.telegram.callback.CallbackDispatcher;
-import org.momentum.telegram.command.CommandDispatcher;
+import org.momentum.telegram.message.command.CommandDispatcher;
 import org.momentum.telegram.message.MessageDispatcher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -14,13 +14,11 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class MomentumBot implements SpringLongPollingBot, LongPollingSingleThreadUpdateConsumer {
 
     private final String botToken;
-    private final CommandDispatcher commandDispatcher;
     private final CallbackDispatcher callbackDispatcher;
     private final MessageDispatcher messageDispatcher;
 
-    public MomentumBot(@Value("${telegram.bot.token}") String botToken, CommandDispatcher commandDispatcher, CallbackDispatcher callbackDispatcher, MessageDispatcher messageDispatcher) {
+    public MomentumBot(@Value("${telegram.bot.token}") String botToken, CallbackDispatcher callbackDispatcher, MessageDispatcher messageDispatcher) {
         this.botToken = botToken;
-        this.commandDispatcher = commandDispatcher;
         this.callbackDispatcher = callbackDispatcher;
         this.messageDispatcher = messageDispatcher;
     }

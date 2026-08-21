@@ -27,7 +27,7 @@ public class TaskTitleMessageHandler implements MessageHandler {
     public boolean supports(Update update) {
 
         Long chatId = update.getMessage().getChatId();
-        return conversationManager.getState(chatId) == ConversationState.WAITING_FOR_TASK_TITLE;
+        return conversationManager.getConversation(chatId).getState() == ConversationState.WAITING_FOR_TASK_TITLE;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class TaskTitleMessageHandler implements MessageHandler {
         String taskTitle = update.getMessage().getText();
         Long chatId = update.getMessage().getChatId();
         Task createdTask = taskService.create(taskTitle);
-        conversationManager.clearState(chatId);
+        conversationManager.clear(chatId);
 
         SendMessage message = SendMessage
                 .builder()

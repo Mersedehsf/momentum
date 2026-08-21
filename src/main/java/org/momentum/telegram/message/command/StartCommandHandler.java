@@ -1,4 +1,4 @@
-package org.momentum.telegram.command;
+package org.momentum.telegram.message.command;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,19 +12,19 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 
 @Component
-public class MenuCommandHandler implements CommandHandler {
+public class StartCommandHandler implements CommandHandler {
 
     private final TelegramClient telegramClient;
 
     @Autowired
-    public MenuCommandHandler(TelegramClient telegramClient) {
+    public StartCommandHandler(TelegramClient telegramClient) {
         this.telegramClient = telegramClient;
     }
 
 
     @Override
     public boolean supports(String command) {
-        return "/menu".equals(command);
+        return "/start".equals(command);
     }
 
     @Override
@@ -35,7 +35,13 @@ public class MenuCommandHandler implements CommandHandler {
         SendMessage message = SendMessage
                 .builder()
                 .chatId(chatId)
-                .text("📋 What would you like to do?")
+                .text("""
+                         👋 Welcome to Momentum!
+                        
+                         Your personal productivity assistant 🍓.
+                        
+                         📋 What would you like to do?
+                        """)
                 .replyMarkup(keyboard())
                 .build();
 
@@ -50,9 +56,11 @@ public class MenuCommandHandler implements CommandHandler {
         return InlineKeyboardMarkup.builder().
                 keyboardRow(new InlineKeyboardRow(button("➕ Add task", "ADD_TASK"))).
                 keyboardRow(new InlineKeyboardRow(button("🗒️ My tasks", "READ_TASK"))).
-                keyboardRow(new InlineKeyboardRow(button("➕ Update task", "UPDATE_TASK"))).
-                keyboardRow(new InlineKeyboardRow(button("➕ Delete task", "DELETE_TASK"))).
-                keyboardRow(new InlineKeyboardRow(button("✅ Complete task", "DELETE_TASK"))).
+                keyboardRow(new InlineKeyboardRow(button("🫒 Edit task", "EDIT_TASK"))).
+                keyboardRow(new InlineKeyboardRow(button("🥒 Add Category", "ADD_CATEGORY"))).
+                keyboardRow(new InlineKeyboardRow(button("🍊 My Categories", "READ_CATEGORIES"))).
+                keyboardRow(new InlineKeyboardRow(button("🍛 Edit Category", "EDIT_CATEGORY"))).
+                keyboardRow(new InlineKeyboardRow(button("🎡 Daily Summary", "DAILY_SUMMARY"))).
                 build();
     }
 

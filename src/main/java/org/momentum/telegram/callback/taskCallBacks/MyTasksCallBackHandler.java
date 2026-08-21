@@ -1,7 +1,8 @@
-package org.momentum.telegram.callback;
+package org.momentum.telegram.callback.taskCallBacks;
 
 import org.momentum.dto.TaskDTO;
 import org.momentum.services.TaskService;
+import org.momentum.telegram.callback.CallbackHandler;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -67,29 +68,28 @@ public class MyTasksCallBackHandler implements CallbackHandler {
         message.append("📋 Today's Tasks\n\n");
 
         for (int i = 0; i < tasks.size(); i++) {
-            message.append(i + 1)
+            message.append("🌱")
                     .append(". ")
                     .append(tasks.get(i).getTitle())
-                    .append(tasks.get(i).getCompleted() == 1 ? "  ✅" : "  ⬜")
+                    .append(tasks.get(i).getCompleted() == 1 ? "  ✅" : "")
                     .append("\n");
         }
 
         return message.toString();
     }
 
-    private InlineKeyboardMarkup buildTasksKeyboard(
-            List<TaskDTO> tasks) {
+    private InlineKeyboardMarkup buildTasksKeyboard(List<TaskDTO> tasks) {
+
+        List<TaskDTO> notCompletedTasks = tasks.stream().filter(taskDTO -> taskDTO.getCompleted() ==0).toList();
 
         List<InlineKeyboardRow> rows = new ArrayList<>();
 
-        for (TaskDTO task : tasks) {
+        for (TaskDTO task : notCompletedTasks) {
 
             InlineKeyboardButton button =
                     InlineKeyboardButton.builder()
                             .text("⬜ " + task.getTitle())
-                            .callbackData(
-                                    "COMPLETE_TASK:" + task.getId()
-                            )
+                            .callbackData("COMPLETE_TASK:" + task.getId())
                             .build();
 
             rows.add(new InlineKeyboardRow(button));
@@ -97,7 +97,7 @@ public class MyTasksCallBackHandler implements CallbackHandler {
 
         rows.add(new InlineKeyboardRow(
                 InlineKeyboardButton.builder()
-                        .text("🚀 Main Menu")
+                        .text("🏠 Main Menu")
                         .callbackData("MAIN_MENU")
                         .build()
         ));

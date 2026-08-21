@@ -1,6 +1,6 @@
 package org.momentum.telegram;
 
-import org.momentum.enums.ConversationState;
+import org.momentum.telegram.Conversation;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -9,20 +9,16 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class ConversationManager {
 
-    private final Map<Long, ConversationState> states = new ConcurrentHashMap<>();
+    private final Map<Long, Conversation> conversations = new ConcurrentHashMap<>();
 
-    public void setState(Long chatId, ConversationState state) {
-        states.put(chatId, state);
-    }
-
-    public ConversationState getState(Long chatId) {
-        return states.getOrDefault(
+    public Conversation getConversation(Long chatId) {
+        return conversations.computeIfAbsent(
                 chatId,
-                ConversationState.IDLE
+                id -> new Conversation()
         );
     }
 
-    public void clearState(Long chatId) {
-        states.remove(chatId);
+    public void clear(Long chatId) {
+        conversations.remove(chatId);
     }
 }

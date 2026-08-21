@@ -42,4 +42,14 @@ public class TaskService extends BaseService<Task, TaskRepository>{
                 .toInstant();
         return repository.getTodaysTasks(startOfDay,startOfTomorrow);
     }
+
+    public Task findById(Long taskId){
+        return repository.findById(taskId).orElse(null);
+    }
+
+    public void updateTask(Long id, Task updatedTask) {
+        Task foundedTask = findById(id);
+        foundedTask = updatedTask;
+        repository.save(foundedTask);
+    }
 }

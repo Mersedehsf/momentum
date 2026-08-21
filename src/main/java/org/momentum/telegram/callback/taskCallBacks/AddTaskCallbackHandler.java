@@ -1,7 +1,9 @@
-package org.momentum.telegram.callback;
+package org.momentum.telegram.callback.taskCallBacks;
 
 import org.momentum.enums.ConversationState;
+import org.momentum.telegram.Conversation;
 import org.momentum.telegram.ConversationManager;
+import org.momentum.telegram.callback.CallbackHandler;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -31,7 +33,8 @@ public class AddTaskCallbackHandler implements CallbackHandler {
                 .getMessage()
                 .getChatId();
 
-        conversationManager.setState(chatId, ConversationState.WAITING_FOR_TASK_TITLE);
+        Conversation conversation = conversationManager.getConversation(chatId);
+        conversation.setState(ConversationState.WAITING_FOR_TASK_TITLE);
 
         SendMessage message = SendMessage
                 .builder()
