@@ -5,7 +5,7 @@ import org.momentum.enums.ConversationState;
 public class Conversation {
 
     private ConversationState state;
-    private Long taskId;
+    private Long objectId;
 
     public ConversationState getState() {
         return state;
@@ -15,11 +15,11 @@ public class Conversation {
         this.state = state;
     }
 
-    public Long getTaskId() {
-        return taskId;
+    public Long getObjectId() {
+        return objectId;
     }
 
-    public void setTaskId(Long taskId) {
-        this.taskId = taskId;
+    public void setObjectId(Long objectId) {
+        this.objectId = objectId;
     }
 }

@@ -1,6 +1,5 @@
-package org.momentum.telegram.message;
+package org.momentum.telegram.message.messageHandler;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.momentum.enums.ConversationState;
 import org.momentum.models.task.Category;
 import org.momentum.models.task.Task;
@@ -13,19 +12,15 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
-import java.util.Objects;
-
 @Component
-public class EditTaskMessageHandler implements MessageHandler {
+public class EditCategoryMessageHandler implements MessageHandler {
 
     private final ConversationManager conversationManager;
-    private final TaskService taskService;
     private final CategoryService categoryService;
     private final TelegramClient telegramClient;
 
-    public EditTaskMessageHandler(ConversationManager conversationManager, TaskService taskService, CategoryService categoryService, TelegramClient telegramClient) {
+    public EditCategoryMessageHandler(ConversationManager conversationManager, CategoryService categoryService, TelegramClient telegramClient) {
         this.conversationManager = conversationManager;
-        this.taskService = taskService;
         this.categoryService = categoryService;
         this.telegramClient = telegramClient;
     }
@@ -33,15 +28,15 @@ public class EditTaskMessageHandler implements MessageHandler {
     @Override
     public boolean supports(Update update) {
         Long chatId = update.getMessage().getChatId();
-        return conversationManager.getConversation(chatId).getState() == ConversationState.EDITING_TASK;
+        return conversationManager.getConversation(chatId).getState() == ConversationState.EDITING_CATEGORY;
     }
 
     @Override
-    public void handle(Update update) {
+    public void handle(Update update)  {
 
         Long chatId = update.getMessage().getChatId();
-        Task foundedTask = taskService.findById(conversationManager.getConversation(chatId).getTaskId());
-        editTask(chatId, update.getMessage().getText(), foundedTask);
+        Category foundedCategory = categoryService.findById(conversationManager.getConversation(chatId).getObjectId());
+        editCategory(chatId, update.getMessage().getText(), foundedCategory);
 
         SendMessage message = SendMessage
                 .builder()
@@ -55,19 +50,14 @@ public class EditTaskMessageHandler implements MessageHandler {
         }
     }
 
-    private void editTask(Long chatId, String text, Task task) {
+    private void editCategory(Long chatId, String text, Category category) {
 
         String title = extractValue(text, "title:");
-        String estimatedMinutes = extractValue(text, "estimatedMinutes:");
-        String category = extractValue(text, "category:");
-        String comment = extractValue(text, "comment:");
-        Integer completed = extractValue(text, "completed:") == null ? null : Integer.valueOf(Objects.requireNonNull(extractValue(text, "comment:")));
+        String deleted = extractValue(text, "deleted:");
 
-        Category foundedCategory = categoryService.findByTitle(category);
+        Category newCategory = new Category(title,Integer.valueOf(deleted));
 
-        Task updatedTask = new Task(title, Integer.getInteger(estimatedMinutes), foundedCategory, comment, completed);
-
-        taskService.updateTask(task.getId(), updatedTask);
+        categoryService.updateCategory(category.getId(), newCategory);
 
         conversationManager.clear(chatId);
     }

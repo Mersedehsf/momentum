@@ -1,4 +1,4 @@
-package org.momentum.telegram.message;
+package org.momentum.telegram.message.messageHandler;
 
 import org.momentum.enums.ConversationState;
 import org.momentum.models.task.Task;

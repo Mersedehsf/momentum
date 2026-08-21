@@ -6,5 +6,9 @@ public enum ConversationState {
 
     WAITING_FOR_TASK_TITLE,
 
-    EDITING_TASK
+    EDITING_TASK,
+
+    WAITING_FOR_CATEGORY_TITLE,
+
+    EDITING_CATEGORY
 }

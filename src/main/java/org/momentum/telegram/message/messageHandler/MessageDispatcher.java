@@ -1,6 +1,6 @@
-package org.momentum.telegram.message;
+package org.momentum.telegram.message.messageHandler;
 
-import org.momentum.telegram.message.command.CommandDispatcher;
+import org.momentum.telegram.message.commandHandler.CommandDispatcher;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 

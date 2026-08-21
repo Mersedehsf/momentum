@@ -1,6 +1,5 @@
-package org.momentum.telegram.callback.taskCallBacks;
+package org.momentum.telegram.callback.taskCallBacks.edit;
 
-import org.momentum.dto.TaskDTO;
 import org.momentum.enums.ConversationState;
 import org.momentum.models.task.Task;
 import org.momentum.services.TaskService;
@@ -10,7 +9,6 @@ import org.momentum.telegram.callback.CallbackHandler;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
@@ -45,7 +43,7 @@ public class EditTaskSelectionCallbackHandler implements CallbackHandler {
 
         Conversation conversation = conversationManager.getConversation(chatId);
 
-        conversation.setTaskId(taskId);
+        conversation.setObjectId(taskId);
         conversation.setState(ConversationState.EDITING_TASK);
 
         Task task = taskService.findById(taskId);

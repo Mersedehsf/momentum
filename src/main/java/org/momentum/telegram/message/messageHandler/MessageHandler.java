@@ -1,4 +1,4 @@
-package org.momentum.telegram.message;
+package org.momentum.telegram.message.messageHandler;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
 

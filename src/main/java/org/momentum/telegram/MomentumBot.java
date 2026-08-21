@@ -1,8 +1,7 @@
 package org.momentum.telegram;
 
 import org.momentum.telegram.callback.CallbackDispatcher;
-import org.momentum.telegram.message.command.CommandDispatcher;
-import org.momentum.telegram.message.MessageDispatcher;
+import org.momentum.telegram.message.messageHandler.MessageDispatcher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.longpolling.interfaces.LongPollingUpdateConsumer;

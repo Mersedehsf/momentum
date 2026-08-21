@@ -11,7 +11,7 @@ import java.time.ZoneId;
 import java.util.List;
 
 @Service
-public class TaskService extends BaseService<Task, TaskRepository>{
+public class TaskService extends BaseService<Task, TaskRepository>{//todo handle deleting as well
 
     @Override
     public Task create(String taskTitle) {
