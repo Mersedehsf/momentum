@@ -1,6 +1,7 @@
 package org.momentum.services;
 
 import org.momentum.dto.TaskDTO;
+import org.momentum.models.task.Category;
 import org.momentum.models.task.Task;
 import org.momentum.repos.TaskRepository;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,11 @@ public class TaskService extends BaseService<Task, TaskRepository>{//todo handle
     public Task create(String taskTitle) {
         Task task = new Task();
         task.setTitle(taskTitle);
+        return repository.save(task);
+    }
+
+    public Task createTask(String title, Integer estimatedMinutes, Category category, String comment) {
+        Task task = new Task(title, estimatedMinutes, category, comment, 0);
         return repository.save(task);
     }
 
@@ -48,8 +54,12 @@ public class TaskService extends BaseService<Task, TaskRepository>{//todo handle
     }
 
     public void updateTask(Long id, Task updatedTask) {
-        Task foundedTask = findById(id);
-        foundedTask = updatedTask;
-        repository.save(foundedTask);
+        Task existingTask = findById(id);
+        existingTask.setTitle(updatedTask.getTitle());
+        existingTask.setEstimatedMinutes(updatedTask.getEstimatedMinutes());
+        existingTask.setCategory(updatedTask.getCategory());
+        existingTask.setComment(updatedTask.getComment());
+        existingTask.setCompleted(updatedTask.getCompleted());
+        repository.save(existingTask);
     }
 }

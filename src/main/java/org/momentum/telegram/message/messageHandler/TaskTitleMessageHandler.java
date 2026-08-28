@@ -1,8 +1,7 @@
 package org.momentum.telegram.message.messageHandler;
 
 import org.momentum.enums.ConversationState;
-import org.momentum.models.task.Task;
-import org.momentum.services.TaskService;
+import org.momentum.telegram.Conversation;
 import org.momentum.telegram.ConversationManager;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -14,12 +13,10 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 public class TaskTitleMessageHandler implements MessageHandler {
 
     private final ConversationManager conversationManager;
-    private final TaskService taskService;
     private final TelegramClient telegramClient;
 
-    public TaskTitleMessageHandler(ConversationManager conversationManager,TaskService taskService,TelegramClient telegramClient) {
+    public TaskTitleMessageHandler(ConversationManager conversationManager, TelegramClient telegramClient) {
         this.conversationManager = conversationManager;
-        this.taskService = taskService;
         this.telegramClient = telegramClient;
     }
 
@@ -35,13 +32,15 @@ public class TaskTitleMessageHandler implements MessageHandler {
 
         String taskTitle = update.getMessage().getText();
         Long chatId = update.getMessage().getChatId();
-        Task createdTask = taskService.create(taskTitle);
-        conversationManager.clear(chatId);
+
+        Conversation conversation = conversationManager.getConversation(chatId);
+        conversation.setTaskTitle(taskTitle);
+        conversation.setState(ConversationState.WAITING_FOR_TASK_ESTIMATED_MINUTES);
 
         SendMessage message = SendMessage
                 .builder()
                 .chatId(chatId)
-                .text("✅ Task added!\n\n" + createdTask.getTitle())
+                .text("⏱️ How many minutes will it take? (enter a number)")
                 .build();
 
         try {

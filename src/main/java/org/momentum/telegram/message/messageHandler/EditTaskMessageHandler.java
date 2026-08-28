@@ -64,12 +64,26 @@ public class EditTaskMessageHandler implements MessageHandler {
 
         Category foundedCategory = categoryService.findByTitle(category);
 
-        Task updatedTask = new Task(title, Integer.getInteger(estimatedMinutes), foundedCategory, comment, completed);
+        Task updatedTask = new Task(title, parseEstimatedMinutes(estimatedMinutes), foundedCategory, comment, completed);
 
         taskService.updateTask(task.getId(), updatedTask);
 
         conversationManager.clear(chatId);
     }
+
+    private Integer parseEstimatedMinutes(String value) {
+
+        if (value == null || value.isEmpty()) {
+            return null;
+        }
+
+        try {
+            return Integer.valueOf(value);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
 
     private String extractValue(String text, String field) {
 

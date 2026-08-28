@@ -16,7 +16,7 @@ public class Task extends BaseEntity {
     @Column(name = "estimatedMinutes")
     private Integer estimatedMinutes;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
 
@@ -90,6 +90,10 @@ public class Task extends BaseEntity {
 
     @Override
     public String toString() {
+        String estimatedMinutesStr = estimatedMinutes != null ? String.valueOf(estimatedMinutes) : "";
+        String categoryStr = category != null ? category.getTitle() : "";
+        String commentStr = comment != null ? comment : "";
+
         return """
             📝 Task
 
@@ -98,10 +102,10 @@ public class Task extends BaseEntity {
             category: %s
             comment: %s
             """.formatted(
-                title,
-                estimatedMinutes,
-                category,
-                comment
+                title != null ? title : "",
+                estimatedMinutesStr,
+                categoryStr,
+                commentStr
         );
     }
 }
