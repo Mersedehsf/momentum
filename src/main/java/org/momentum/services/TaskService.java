@@ -53,6 +53,12 @@ public class TaskService extends BaseService<Task, TaskRepository>{//todo handle
         return repository.findById(taskId).orElse(null);
     }
 
+    public void softDelete(Long taskId) {
+        Task task = repository.findById(taskId).orElseThrow(() -> new RuntimeException());
+        task.setDeleted(1);
+        repository.save(task);
+    }
+
     public void updateTask(Long id, Task updatedTask) {
         Task existingTask = findById(id);
         existingTask.setTitle(updatedTask.getTitle());

@@ -31,6 +31,7 @@ public class StartCommandHandler implements CommandHandler {
     public void handle(Update update) {
 
         Long chatId = update.getMessage().getChatId();
+        System.out.println("CHATID IS = "+chatId);
 
         SendMessage message = SendMessage
                 .builder()
@@ -57,9 +58,11 @@ public class StartCommandHandler implements CommandHandler {
                 keyboardRow(new InlineKeyboardRow(button("➕ Add task", "ADD_TASK"))).
                 keyboardRow(new InlineKeyboardRow(button("🗒️ My tasks", "READ_TASK"))).
                 keyboardRow(new InlineKeyboardRow(button("🫒 Edit task", "EDIT_TASK"))).
+                keyboardRow(new InlineKeyboardRow(button("🗑️ Delete task", "DELETE_TASK"))).
                 keyboardRow(new InlineKeyboardRow(button("🥒 Add Category", "ADD_CATEGORY"))).
                 keyboardRow(new InlineKeyboardRow(button("🍊 My Categories", "READ_CATEGORIES"))).
                 keyboardRow(new InlineKeyboardRow(button("🍛 Edit Category", "EDIT_CATEGORY"))).
+                keyboardRow(new InlineKeyboardRow(button("🗑️ Delete category", "DELETE_CATEGORY"))).
                 keyboardRow(new InlineKeyboardRow(button("🎡 Daily Summary", "DAILY_SUMMARY"))).
                 build();
     }

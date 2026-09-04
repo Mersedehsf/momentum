@@ -49,9 +49,11 @@ public class MainMenuCallbackHandler implements CallbackHandler{
                 keyboardRow(new InlineKeyboardRow(button("➕ Add task", "ADD_TASK"))).
                 keyboardRow(new InlineKeyboardRow(button("🗒️ My tasks", "READ_TASK"))).
                 keyboardRow(new InlineKeyboardRow(button("🫒 Edit task", "EDIT_TASK"))).
+                keyboardRow(new InlineKeyboardRow(button("🗑️ Delete task", "DELETE_TASK"))).
                 keyboardRow(new InlineKeyboardRow(button("🥒 Add Category", "ADD_CATEGORY"))).
                 keyboardRow(new InlineKeyboardRow(button("🍊 My Categories", "READ_CATEGORIES"))).
                 keyboardRow(new InlineKeyboardRow(button("🍛 Edit Category", "EDIT_CATEGORY"))).
+                keyboardRow(new InlineKeyboardRow(button("🗑️ Delete category", "DELETE_CATEGORY"))).
                 keyboardRow(new InlineKeyboardRow(button("🎡 Daily Summary", "DAILY_SUMMARY"))).
                 build();
     }

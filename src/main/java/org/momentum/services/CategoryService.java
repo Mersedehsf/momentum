@@ -30,6 +30,12 @@ public class CategoryService extends BaseService<Category, CategoryRepository> {
 
     }
 
+    public void softDelete(Long categoryId) {
+        Category category = repository.findById(categoryId).orElseThrow(() -> new RuntimeException());
+        category.setDeleted(1);
+        repository.save(category);
+    }
+
     public void updateCategory(Long id, Category newCategory) {
         Category foundedCategory = findById(id);
         foundedCategory = newCategory;

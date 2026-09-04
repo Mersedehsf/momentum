@@ -23,7 +23,7 @@ public class Task extends BaseEntity {
     @Column(name = "comment")
     private String comment;
 
-    @Column(name = "completed")
+    @Column(name = "completed",nullable = false)
     private Integer completed = 0;
 
     @Column(name = "completion_time")
