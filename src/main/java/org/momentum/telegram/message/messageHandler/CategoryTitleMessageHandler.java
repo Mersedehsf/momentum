@@ -2,15 +2,19 @@ package org.momentum.telegram.message.messageHandler;
 
 import org.momentum.enums.ConversationState;
 import org.momentum.models.task.Category;
-import org.momentum.models.task.Task;
 import org.momentum.services.CategoryService;
-import org.momentum.services.TaskService;
 import org.momentum.telegram.ConversationManager;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class CategoryTitleMessageHandler implements MessageHandler {
@@ -40,10 +44,19 @@ public class CategoryTitleMessageHandler implements MessageHandler {
         Category createdCategory = categoryService.create(categoryTitle);
         conversationManager.clear(chatId);
 
+        List<InlineKeyboardRow> rows = new ArrayList<>();
+
+        rows.add(new InlineKeyboardRow(
+                InlineKeyboardButton.builder()
+                        .text("🏠 Main Menu")
+                        .callbackData("MAIN_MENU")
+                        .build()));
+
         SendMessage message = SendMessage
                 .builder()
                 .chatId(chatId)
                 .text("✅ Category added!\n\n" + createdCategory.getTitle())
+                .replyMarkup(new InlineKeyboardMarkup(rows))
                 .build();
 
         try {

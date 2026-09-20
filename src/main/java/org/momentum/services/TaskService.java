@@ -21,8 +21,8 @@ public class TaskService extends BaseService<Task, TaskRepository>{//todo handle
         return repository.save(task);
     }
 
-    public Task createTask(String title, Integer estimatedMinutes, Category category, String comment) {
-        Task task = new Task(title, estimatedMinutes, category, comment, 0);
+    public Task createTask(String title, Integer estimatedMinutes, Category category) {
+        Task task = new Task(title, estimatedMinutes, category, 0);
         return repository.save(task);
     }
 

@@ -40,7 +40,7 @@ public class AddTaskCallbackHandler implements CallbackHandler {
                 .builder()
                 .chatId(chatId)
                 .text("✏️ What task would you like to add?")
-                .build();//todo then ask,in what category
+                .build();
         try {
             telegramClient.execute(message);
         } catch (TelegramApiException e) {

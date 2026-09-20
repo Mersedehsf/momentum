@@ -59,12 +59,11 @@ public class EditTaskMessageHandler implements MessageHandler {
         String title = extractValue(text, "title:");
         String estimatedMinutes = extractValue(text, "estimatedMinutes:");
         String category = extractValue(text, "category:");
-        String comment = extractValue(text, "comment:");
         Integer completed = extractValue(text, "completed:") == null ? null : Integer.valueOf(Objects.requireNonNull(extractValue(text, "comment:")));
 
         Category foundedCategory = categoryService.findByTitle(category);
 
-        Task updatedTask = new Task(title, parseEstimatedMinutes(estimatedMinutes), foundedCategory, comment, completed);
+        Task updatedTask = new Task(title, parseEstimatedMinutes(estimatedMinutes), foundedCategory, completed);
 
         taskService.updateTask(task.getId(), updatedTask);
 

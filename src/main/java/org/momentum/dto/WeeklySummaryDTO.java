@@ -8,9 +8,6 @@ public class WeeklySummaryDTO {
     private long completedCount;
     private long incompleteCount;
     private double completionRate;
-    private long totalEstimatedMinutes;
-    private long completedEstimatedMinutes;
-    private LocalDate busiestCreationDay;
     private LocalDate busiestCompletionDay;
 
     public long getTotalCreated() {
@@ -43,30 +40,6 @@ public class WeeklySummaryDTO {
 
     public void setCompletionRate(double completionRate) {
         this.completionRate = completionRate;
-    }
-
-    public long getTotalEstimatedMinutes() {
-        return totalEstimatedMinutes;
-    }
-
-    public void setTotalEstimatedMinutes(long totalEstimatedMinutes) {
-        this.totalEstimatedMinutes = totalEstimatedMinutes;
-    }
-
-    public long getCompletedEstimatedMinutes() {
-        return completedEstimatedMinutes;
-    }
-
-    public void setCompletedEstimatedMinutes(long completedEstimatedMinutes) {
-        this.completedEstimatedMinutes = completedEstimatedMinutes;
-    }
-
-    public LocalDate getBusiestCreationDay() {
-        return busiestCreationDay;
-    }
-
-    public void setBusiestCreationDay(LocalDate busiestCreationDay) {
-        this.busiestCreationDay = busiestCreationDay;
     }
 
     public LocalDate getBusiestCompletionDay() {

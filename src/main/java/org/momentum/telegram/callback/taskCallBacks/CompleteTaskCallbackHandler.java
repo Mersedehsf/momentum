@@ -97,10 +97,20 @@ public class CompleteTaskCallbackHandler implements CallbackHandler {
 
     private void sendConfirmation(Long chatId) {
 
+        List<InlineKeyboardRow> rows = new ArrayList<>();
+
+
+        rows.add(new InlineKeyboardRow(
+                InlineKeyboardButton.builder()
+                        .text("🏠 Main Menu")
+                        .callbackData("MAIN_MENU")
+                        .build()));
+
         SendMessage message = SendMessage
                 .builder()
                 .chatId(chatId)
                 .text("✅ Task completed!")
+                .replyMarkup(new InlineKeyboardMarkup(rows))
                 .build();
 
         try {

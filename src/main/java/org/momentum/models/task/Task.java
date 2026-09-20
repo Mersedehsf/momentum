@@ -32,11 +32,10 @@ public class Task extends BaseEntity {
     public Task() {
     }
 
-    public Task(String title, Integer estimatedMinutes, Category category, String comment, Integer completed) {
+    public Task(String title, Integer estimatedMinutes, Category category, Integer completed) {
         this.title = title;
         this.estimatedMinutes = estimatedMinutes;
         this.category = category;
-        this.comment = comment;
         this.completed = completed;
     }
 

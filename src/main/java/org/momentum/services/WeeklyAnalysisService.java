@@ -50,10 +50,6 @@ public class WeeklyAnalysisService {
 
         summary.setCompletionRate(created.isEmpty() ? 0.0 : (completed.size() * 100.0) / created.size());
 
-        summary.setTotalEstimatedMinutes(safeSum(created));
-        summary.setCompletedEstimatedMinutes(safeSum(completed));
-
-        summary.setBusiestCreationDay(busiestCreationDay(created));
         summary.setBusiestCompletionDay(busiestCompletionDay(completed));
 
         return summary;
@@ -63,10 +59,6 @@ public class WeeklyAnalysisService {
         return tasks.stream()
                 .mapToLong(task -> task.getEstimatedMinutes() == null ? 0L : task.getEstimatedMinutes())
                 .sum();
-    }
-
-    private LocalDate busiestCreationDay(List<Task> tasks) {
-        return busiestDay(tasks, true);
     }
 
     private LocalDate busiestCompletionDay(List<Task> tasks) {
@@ -96,28 +88,21 @@ public class WeeklyAnalysisService {
 
     public String format(WeeklySummaryDTO summary) {
 
-        String createdDay = summary.getBusiestCreationDay() == null ? "—" : summary.getBusiestCreationDay().toString();
         String completedDay = summary.getBusiestCompletionDay() == null ? "—" : summary.getBusiestCompletionDay().toString();
 
         return """
                 📊 Weekly Performance Summary
 
-                📝 Tasks created: %d
-                ✅ Completed: %d
-                ⏳ Incomplete: %d
                 📈 Completion rate: %.1f%%
-                ⏱️ Total estimated minutes: %d
-                ▶️ Completed estimated minutes: %d
-                📅 Busiest creation day: %s
+                ✅ Completed: %d
+                📝 Tasks created: %d
+                ⏳ Incomplete: %d
                 🎯 Busiest completion day: %s
                 """.formatted(
-                summary.getTotalCreated(),
-                summary.getCompletedCount(),
-                summary.getIncompleteCount(),
                 summary.getCompletionRate(),
-                summary.getTotalEstimatedMinutes(),
-                summary.getCompletedEstimatedMinutes(),
-                createdDay,
+                summary.getCompletedCount(),
+                summary.getTotalCreated(),
+                summary.getIncompleteCount(),
                 completedDay
         );
     }
