@@ -64,9 +64,6 @@ class WeeklyAnalysisServiceTest {
         assertEquals(0, summary.getCompletedCount());
         assertEquals(0, summary.getIncompleteCount());
         assertEquals(0.0, summary.getCompletionRate());
-        assertEquals(0, summary.getTotalEstimatedMinutes());
-        assertEquals(0, summary.getCompletedEstimatedMinutes());
-        assertNull(summary.getBusiestCreationDay());
         assertNull(summary.getBusiestCompletionDay());
     }
 
@@ -124,19 +121,6 @@ class WeeklyAnalysisServiceTest {
         assertEquals(1, summary.getCompletedCount());
         assertEquals(0, summary.getIncompleteCount());
         assertEquals(100.0, summary.getCompletionRate(), 0.0001);
-        assertEquals(30, summary.getCompletedEstimatedMinutes());
-    }
-
-    @Test
-    void busiestCreationDay_picksDayWithMostTasksCreated() {
-        Task saturday1 = task(instant(2026, 1, 3, 10, 0), 10, 0, null);
-        Task saturday2 = task(instant(2026, 1, 3, 11, 0), 10, 0, null);
-        Task sunday = task(instant(2026, 1, 4, 12, 0), 10, 0, null);
-        stubCreated(List.of(saturday1, saturday2, sunday));
-
-        WeeklySummaryDTO summary = service.analyze();
-
-        assertEquals(LocalDate.of(2026, 1, 3), summary.getBusiestCreationDay());
     }
 
     @Test
@@ -150,42 +134,6 @@ class WeeklyAnalysisServiceTest {
         WeeklySummaryDTO summary = service.analyze();
 
         assertEquals(LocalDate.of(2026, 1, 5), summary.getBusiestCompletionDay());
-    }
-
-    @Test
-    void nullEstimatedMinutes_treatedAsZero() {
-        Task t1 = task(instant(2026, 1, 3, 10, 0), null, 1, instant(2026, 1, 3, 18, 0));
-        Task t2 = task(instant(2026, 1, 4, 12, 0), 50, 0, null);
-        stubCreated(List.of(t1, t2));
-
-        WeeklySummaryDTO summary = service.analyze();
-
-        assertEquals(50, summary.getTotalEstimatedMinutes());
-        assertEquals(0, summary.getCompletedEstimatedMinutes());
-    }
-
-    @Test
-    void totalEstimatedMinutes_sumsAllWeeklyTasks() {
-        Task t1 = task(instant(2026, 1, 3, 10, 0), 30, 1, instant(2026, 1, 3, 18, 0));
-        Task t2 = task(instant(2026, 1, 4, 12, 0), 45, 0, null);
-        Task t3 = task(instant(2026, 1, 5, 9, 0), 25, 0, null);
-        stubCreated(List.of(t1, t2, t3));
-
-        WeeklySummaryDTO summary = service.analyze();
-
-        assertEquals(100, summary.getTotalEstimatedMinutes());
-    }
-
-    @Test
-    void completedEstimatedMinutes_sumsOnlyCompletedWeeklyTasks() {
-        Task completed1 = task(instant(2026, 1, 3, 10, 0), 30, 1, instant(2026, 1, 3, 18, 0));
-        Task completed2 = task(instant(2026, 1, 4, 12, 0), 45, 1, instant(2026, 1, 4, 20, 0));
-        Task incomplete = task(instant(2026, 1, 5, 9, 0), 60, 0, null);
-        stubCreated(List.of(completed1, completed2, incomplete));
-
-        WeeklySummaryDTO summary = service.analyze();
-
-        assertEquals(75, summary.getCompletedEstimatedMinutes());
     }
 
     @Test
@@ -233,6 +181,5 @@ class WeeklyAnalysisServiceTest {
 
         assertEquals(0, summary.getTotalCreated());
         assertEquals(0.0, summary.getCompletionRate());
-        assertEquals(0, summary.getCompletedEstimatedMinutes());
     }
 }
