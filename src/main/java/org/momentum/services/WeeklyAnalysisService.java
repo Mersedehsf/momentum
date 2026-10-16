@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -52,6 +53,8 @@ public class WeeklyAnalysisService {
 
         summary.setBusiestCompletionDay(busiestCompletionDay(completed));
 
+        summary.setMinutesPerCategory(minutesPerCategory(completed));
+
         return summary;
     }
 
@@ -63,6 +66,26 @@ public class WeeklyAnalysisService {
 
     private LocalDate busiestCompletionDay(List<Task> tasks) {
         return busiestDay(tasks, false);
+    }
+
+    private Map<String, Long> minutesPerCategory(List<Task> completedTasks) {
+        Map<String, Long> grouped = completedTasks.stream()
+                .collect(Collectors.groupingBy(
+                        task -> task.getCategory() != null && task.getCategory().getTitle() != null
+                                ? task.getCategory().getTitle()
+                                : "Uncategorized",
+                        Collectors.summingLong(task -> task.getEstimatedMinutes() == null ? 0L : task.getEstimatedMinutes())
+                ));
+
+        return grouped.entrySet().stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed()
+                        .thenComparing(Map.Entry.comparingByKey()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (a, b) -> a,
+                        LinkedHashMap::new
+                ));
     }
 
     private LocalDate busiestDay(List<Task> tasks, boolean useCreationTime) {
@@ -89,6 +112,7 @@ public class WeeklyAnalysisService {
     public String format(WeeklySummaryDTO summary) {
 
         String completedDay = summary.getBusiestCompletionDay() == null ? "—" : summary.getBusiestCompletionDay().toString();
+        String categorySection = formatCategoryMinutes(summary.getMinutesPerCategory());
 
         return """
                 📊 Weekly Performance Summary
@@ -98,12 +122,27 @@ public class WeeklyAnalysisService {
                 📝 Tasks created: %d
                 ⏳ Incomplete: %d
                 🎯 Busiest completion day: %s
+                %s
                 """.formatted(
                 summary.getCompletionRate(),
                 summary.getCompletedCount(),
                 summary.getTotalCreated(),
                 summary.getIncompleteCount(),
-                completedDay
+                completedDay,
+                categorySection
         );
+    }
+
+    private String formatCategoryMinutes(Map<String, Long> minutesPerCategory) {
+        if (minutesPerCategory == null || minutesPerCategory.isEmpty()) {
+            return "⏱️ Time spent per category: —";
+        }
+        StringBuilder sb = new StringBuilder("⏱️ Time spent per category:");
+        minutesPerCategory.forEach((category, minutes) ->
+                sb.append("\n  • ").append(category).append(": ").append(minutes).append(" min")
+        );
+        long total = minutesPerCategory.values().stream().mapToLong(Long::longValue).sum();
+        sb.append("\n  ─ Total: ").append(total).append(" min");
+        return sb.toString();
     }
 }

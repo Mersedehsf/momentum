@@ -1,6 +1,8 @@
 package org.momentum.dto;
 
 import java.time.LocalDate;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class WeeklySummaryDTO {
 
@@ -9,6 +11,7 @@ public class WeeklySummaryDTO {
     private long incompleteCount;
     private double completionRate;
     private LocalDate busiestCompletionDay;
+    private Map<String, Long> minutesPerCategory = new LinkedHashMap<>();
 
     public long getTotalCreated() {
         return totalCreated;
@@ -48,5 +51,13 @@ public class WeeklySummaryDTO {
 
     public void setBusiestCompletionDay(LocalDate busiestCompletionDay) {
         this.busiestCompletionDay = busiestCompletionDay;
+    }
+
+    public Map<String, Long> getMinutesPerCategory() {
+        return minutesPerCategory;
+    }
+
+    public void setMinutesPerCategory(Map<String, Long> minutesPerCategory) {
+        this.minutesPerCategory = minutesPerCategory != null ? new LinkedHashMap<>(minutesPerCategory) : new LinkedHashMap<>();
     }
 }
